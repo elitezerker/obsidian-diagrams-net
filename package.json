@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-diagrams-net",
-	"version": "1.0.5",
-	"description": "Enable diagrams.net (previously draw.io) type diagrams, with the diagrams.net embedded editor.",
+	"name": "obsidian-diagrams-net-modified",
+	"version": "1.0.6",
+	"description": "Modified version of obsidian-diagrams-net with dark mode support.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
