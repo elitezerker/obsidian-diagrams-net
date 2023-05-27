@@ -19,6 +19,8 @@
     ]
   },
   "include": [
-    "**/*.ts", "**/*.tsx"
+	  "**/*.ts",
+	  "**/*.tsx",
+	  "node_modules/@types/node/buffer.d.ts",
   ]
 }

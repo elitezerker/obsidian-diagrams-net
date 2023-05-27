@@ -1,5 +1,5 @@
 import { ItemView, WorkspaceLeaf, Workspace, View, Vault, TFile } from 'obsidian';
-import { DIAGRAM_VIEW_TYPE } from './constants';
+import { DIAGRAM_VIEW_TYPE, DARK_MODE} from './constants';
 import { DiagramsApp } from './DiagramsApp';
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -37,9 +37,19 @@ export default class DiagramsView extends ItemView {
     }
 
 
-
-
     async onOpen() {
+
+		const replace = (buf:Buffer, a:any, b:any):Buffer => {
+			if (!Buffer.isBuffer(buf)) buf = new Buffer(buf);
+			const idx = buf.indexOf(a);
+			if (idx === -1) return buf;
+			if (!Buffer.isBuffer(b)) b = new Buffer(b);
+
+			const before = buf.slice(0, idx);
+			const after = replace(buf.slice(idx + a.length), a, b);
+			const len = idx + b.length + after.length;
+			return Buffer.concat([ before, b, after ], len);
+		}
 
         const handleExit = async () => {
             close()
@@ -64,7 +74,8 @@ export default class DiagramsView extends ItemView {
 
         const saveData = (msg: any) => {
             const svgData = msg.svgMsg.data
-            const svgBuffer = Buffer.from(svgData.replace('data:image/svg+xml;base64,', ''), 'base64')
+            let svgBuffer = Buffer.from(svgData.replace('data:image/svg+xml;base64,', ''), 'base64')
+			svgBuffer = replace(svgBuffer, '<defs/>', DARK_MODE);
             if (this.diagramExists) {
                 const svgFile = this.vault.getAbstractFileByPath(this.svgPath)
                 const xmlFile = this.vault.getAbstractFileByPath(this.xmlPath)
